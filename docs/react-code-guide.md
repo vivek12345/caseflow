@@ -15,45 +15,47 @@
 ## Directory Structure
 
 template for organizing a Caseflow react app
-
-    └── client
-        ├── app
-        │   ├── index.js
-        │   └── <app_name>
-        │       ├── index.js
-        │       ├── routes.js
-        │       ├── constants.js
-        │       ├── reducers.js
-        │       ├── utils.js
-        │       ├── components
-        │       │   ├── index.js
-        │       │   ├── Component1.js
-        │       │   └── Component2
-        │       │       ├── Component2.js
-        │       │       ├── Component2SpecificComponent.js
-        │       │       └── style.js
-        │       └── pages
-        │           └── page1
-        │               ├── page1.js
-        │               ├── reducers.js
-        │               ├── actions.js
-        │               ├── constants.js
-        │               └── Page1SpecificContainerComponent1.js
-        ├── components
-        ├── utils
-        └── constants
-
+```
+└── client
+    ├── app
+    │   ├── index.js
+    │   └── <app_name>
+    │       ├── index.js
+    │       ├── routes.js
+    │       ├── constants.js
+    │       ├── reducers.js
+    │       ├── utils.js
+    │       ├── components
+    │       │   ├── index.js
+    │       │   ├── Component1.js
+    │       │   └── Component2
+    │       │       ├── Component2.js
+    │       │       ├── Component2SpecificComponent.js
+    │       │       └── style.js
+    │       └── pages
+    │           └── page1
+    │               ├── page1.js
+    │               ├── reducers.js
+    │               ├── actions.js
+    │               ├── constants.js
+    │               └── Page1SpecificContainerComponent1.js
+    ├── components
+    ├── utils
+    └── constants
+```
 
 - `components/` - defines all presentational components (e.g inputs, modals, styled components)
 
     → `index.js` - exports all components from the directory
-
+      ```javascript
         export Component1 from './Component1';
         export Component2 from './Component2/Component2.js';
+      ```
 
     this allows us to access all components in a directory easily
-
+      ```javascript
         import { Component2 } from '../../components';
+      ```
 
 - `pages` - generally map to `routes`.
 
@@ -80,7 +82,7 @@ template for organizing a Caseflow react app
     → Alternatively consider
 
 - don't use class-based getter methods to define a component
-
+  ```javascript
     // do this
 
     const StatelessComponent = () => (
@@ -94,6 +96,7 @@ template for organizing a Caseflow react app
     		<div></div>
     	)
     }
+  ```
 
 ## Style
 
@@ -102,12 +105,13 @@ template for organizing a Caseflow react app
 - create style objects with `glamor`
 
     → If styles are long or complicated, consider creating `style.js` file in the component's directory
-
+      ```javascript
         // client/<app_name>/components/Component2/style.js
         import glamor from 'glamor';
 
         export const componentStyle1 = glamor({});
         export const componentStyle2 = glamor({});
+      ```
 
 ### Can We SPA?
 
