@@ -47,15 +47,17 @@ template for organizing a Caseflow react app
 - `components/` - defines all presentational components (e.g inputs, modals, styled components)
 
     → `index.js` - exports all components from the directory
-      ```javascript
-        export Component1 from './Component1';
-        export Component2 from './Component2/Component2.js';
-      ```
+
+```javascript
+export Component1 from './Component1';
+export Component2 from './Component2/Component2.js';
+```
 
     this allows us to access all components in a directory easily
-      ```javascript
-        import { Component2 } from '../../components';
-      ```
+
+```javascript
+import { Component2 } from '../../components';
+```
 
 - `pages` - generally map to `routes`.
 
