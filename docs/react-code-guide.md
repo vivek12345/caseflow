@@ -81,8 +81,6 @@ import { Component2 } from '../../components';
 
     → Higher order components obscure application logic and data and can make components harder to reason about. Consider refactoring components to take additional props rather than wrapping components to add new props / functionality.
 
-    → Alternatively consider
-
 - don't use class-based getter methods to define a component
 
 ```javascript
