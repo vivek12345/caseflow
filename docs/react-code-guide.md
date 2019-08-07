@@ -53,7 +53,7 @@ export Component1 from './Component1';
 export Component2 from './Component2/Component2.js';
 ```
 
-    this allows us to access all components in a directory easily
+this allows us to access all components in a directory easily
 
 ```javascript
 import { Component2 } from '../../components';
@@ -62,6 +62,7 @@ import { Component2 } from '../../components';
 - `pages` - generally map to `routes`.
 
     → analogous to what some Caseflow apps call `containers/`
+
     → redux `reducers` , `actions` , and `constants` should be defined in the directory for the page(s) that use them
 
 ## General Conventions
