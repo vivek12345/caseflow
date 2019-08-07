@@ -60,7 +60,6 @@ template for organizing a Caseflow react app
 - `pages` - generally map to `routes`.
 
     → analogous to what some Caseflow apps call `containers/`
-
     → redux `reducers` , `actions` , and `constants` should be defined in the directory for the page(s) that use them
 
 ## General Conventions
@@ -82,21 +81,21 @@ template for organizing a Caseflow react app
     → Alternatively consider
 
 - don't use class-based getter methods to define a component
-  ```javascript
-    // do this
+```
+// do this
 
-    const StatelessComponent = () => (
-    	<div></div>
-    );
+const StatelessComponent = () => (
+	<div></div>
+);
 
-    // not this
+// not this
 
-    class StatefulComponent extends React.Component {
-    	getStatelessComponent = () => (
-    		<div></div>
-    	)
-    }
-  ```
+class StatefulComponent extends React.Component {
+	getStatelessComponent = () => (
+		<div></div>
+	)
+}
+```
 
 ## Style
 
@@ -105,13 +104,14 @@ template for organizing a Caseflow react app
 - create style objects with `glamor`
 
     → If styles are long or complicated, consider creating `style.js` file in the component's directory
-      ```javascript
-        // client/<app_name>/components/Component2/style.js
-        import glamor from 'glamor';
 
-        export const componentStyle1 = glamor({});
-        export const componentStyle2 = glamor({});
-      ```
+```
+// client/<app_name>/components/Component2/style.js
+import glamor from 'glamor';
+
+export const componentStyle1 = glamor({});
+export const componentStyle2 = glamor({});
+```
 
 ### Can We SPA?
 
