@@ -81,7 +81,8 @@ template for organizing a Caseflow react app
     → Alternatively consider
 
 - don't use class-based getter methods to define a component
-```
+
+```javascript
 // do this
 
 const StatelessComponent = () => (
@@ -105,7 +106,7 @@ class StatefulComponent extends React.Component {
 
     → If styles are long or complicated, consider creating `style.js` file in the component's directory
 
-```
+```javascript
 // client/<app_name>/components/Component2/style.js
 import glamor from 'glamor';
 
