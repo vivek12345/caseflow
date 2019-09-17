@@ -9,6 +9,19 @@ class ApplicationController < ApplicationBaseController
   before_action :set_paper_trail_whodunnit
   before_action :deny_vso_access, except: [:unauthorized, :feedback]
 
+  around_action :performance_profile if Rails.env.development?
+
+  def performance_profile
+    if params[:profile]
+      # Overwrite the response with the ruby-prof HTML report.
+      self.response_body = ProfilerService.profile(request) { yield }
+
+      headers["Content-Type"] = "text/html"
+    else
+      yield
+    end
+  end
+
   rescue_from StandardError do |e|
     fail e unless e.class.method_defined?(:serialize_response)
 
