@@ -1,7 +1,6 @@
 # Code Profiling with ruby-prof
 
-![KCachegrind]
-(https://raw.githubusercontent.com/department-of-veterans-affairs/caseflow/master/docs/img/Code-Profiling-KCachegrind.png)
+![KCachegrind](https://github.com/department-of-veterans-affairs/caseflow/raw/e80735d44228459472643820165f971b1146c06c/docs/img/Code-Profiling-KCachegrind.png)
 
 ## Overview
 
