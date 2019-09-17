@@ -59,6 +59,7 @@ clean:  ## Clean logs, compiled webpack assets, and temporary files
 	rm -f log/test.log
 	rm -f app/assets/javascripts/*webpack*
 	rm -rf tmp/capybara
+	rm -rf bench
 
 vacols:  ## TODO
 	docker exec --tty -i VACOLS_DB bash
