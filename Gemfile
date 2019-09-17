@@ -112,6 +112,7 @@ group :development do
   gem "fasterer", require: false
   gem "foreman"
   gem "meta_request"
+  gem "ruby-prof"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   # gem 'spring', platforms: :ruby
   # Include the IANA Time Zone Database on Windows, where Windows doesn't ship with a timezone database.
