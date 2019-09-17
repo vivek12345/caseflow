@@ -22,7 +22,7 @@ client/yarn-error.log
 /coverage
 /reports/*
 !/reports/.keep
-/bench
+/profile
 
 # Ignore vim swap and tag files
 *.swp

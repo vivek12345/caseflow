@@ -28,7 +28,7 @@ class ProfilerService
 
     def callgrind_report(result, request)
       timestamp = Time.zone.now.strftime("%Y-%m-%d-%H-%M-%S")
-      benchmark_folder = "bench/#{request.path_info.parameterize}"
+      benchmark_folder = "profile/#{request.path_info.parameterize}"
 
       FileUtils.mkdir_p(benchmark_folder)
 
