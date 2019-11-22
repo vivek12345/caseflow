@@ -145,31 +145,35 @@ class DailyDocketRow extends React.Component {
   }
 
   checkAodAndSave = () => {
+    const saveHearing = this.saveHearing();
+
     if (this.aodDecidedByAnotherUser()) {
       this.openAodModal();
     } else {
-      this.saveHearing();
+      saveHearing();
     }
   }
 
   saveHearing = () => {
-    const isValid = this.validate();
+    const state = this.state.initialState;
 
-    if (!isValid) {
-      return;
-    }
+    return () => {
+      const isValid = this.validate();
 
-    const hearing = deepDiff(this.state.initialState, this.props.hearing);
+      if (!isValid) {
+        return;
+      }
 
-    this.props.saveHearing(this.props.hearing.externalId, hearing).
-      then((success) => {
-        if (success) {
-          this.setState({
-            initialState: { ...this.props.hearing },
-            edited: false
-          });
-        }
-      });
+      this.props.saveHearing(this.props.hearing.externalId, state).
+        then((success) => {
+          if (success) {
+            this.setState({
+              initialState: { ...this.props.hearing },
+              edited: false
+            });
+          }
+        });
+    };
   }
 
   isAmaHearing = () => this.props.hearing.docketName === 'hearing'
@@ -246,7 +250,7 @@ class DailyDocketRow extends React.Component {
         hearing={hearing} />
       <DispositionDropdown {...inputProps}
         cancelUpdate={this.cancelUpdate}
-        saveHearing={this.saveHearing}
+        saveHearing={this.saveHearing()}
         openDispositionModal={openDispositionModal} />
       {(user.userHasHearingPrepRole && this.isAmaHearing()) &&
         <Waive90DayHoldCheckbox {...inputProps} />}
@@ -258,6 +262,7 @@ class DailyDocketRow extends React.Component {
 
   render () {
     const { hearing, user, index, readOnly } = this.props;
+    const saveHearing = this.saveHearing();
 
     return <React.Fragment>
       <div>
@@ -283,14 +288,14 @@ class DailyDocketRow extends React.Component {
           }} user={user}
           update={this.updateVirtualHearing}
           submit={() => {
-            this.saveHearing();
+            saveHearing();
             this.closeVirtualHearingModal();
           }}
         />}
       {this.state.aodModalActive && <AodModal
         advanceOnDocketMotion={hearing.advanceOnDocketMotion || {}}
         onConfirm={() => {
-          this.saveHearing();
+          saveHearing();
           this.closeAodModal();
         }}
         onCancel={() => {

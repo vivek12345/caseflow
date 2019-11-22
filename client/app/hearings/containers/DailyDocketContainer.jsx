@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { LOGO_COLORS } from '../../constants/AppConstants';
 import LoadingDataDisplay from '../../components/LoadingDataDisplay';
 import ApiUtil from '../../util/ApiUtil';
+import { deepDiff } from '../utils';
 import {
   onReceiveDailyDocket,
   onReceiveHearing,
@@ -121,8 +122,10 @@ export class DailyDocketContainer extends React.Component {
     });
   }
 
-  saveHearing = (hearingId, hearingFormData) => {
+  saveHearing = (hearingId, initialHearingState) => {
     const hearing = this.props.hearings[hearingId];
+    const hearingFormData = deepDiff(initialHearingState, hearing);
+
     const data = {
       hearing: this.formatHearingFormData(hearingFormData),
       advance_on_docket_motion: this.formatAodMotionForm(hearingFormData.advanceOnDocketMotion, hearing)
