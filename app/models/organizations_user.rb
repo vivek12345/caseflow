@@ -32,4 +32,13 @@ class OrganizationsUser < ApplicationRecord
   def self.existing_record(user, organization)
     find_by(organization_id: organization.id, user_id: user.id)
   end
+
+  def self.updated_judge_team_lead_status(params)
+    # make user be judge team lead <--- update judge_team_roles table in the database
+  end
+
+  def self.update_attorney_team(params)
+    # make user be attorney roles <--- update judge_team_roles table in the database
+    "alec"
+  end
 end

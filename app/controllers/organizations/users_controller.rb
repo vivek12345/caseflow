@@ -32,6 +32,15 @@ class Organizations::UsersController < OrganizationsController
       end
     end
 
+    if params.key?(:judge_team_lead)
+      # OrganizationUser.updated_judge_team_lead_status(params)
+      JudgeTeam.update_role(params - user, organization, role)
+    elsif params.key?(:team_attorney)
+      # OrganizationUser.update_attorney_team(params)
+      JudgeTeam
+    end
+
+
     render json: { users: json_administered_users([user_to_modify]) }, status: :ok
   end
 

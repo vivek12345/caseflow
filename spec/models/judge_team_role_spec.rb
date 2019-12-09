@@ -70,4 +70,14 @@ describe JudgeTeamRole, :postgres do
       expect(subject.organization).to be_a(Organization)
     end
   end
+
+  describe ".add_judge_team_lead" do
+    # add tests here
+
+    it "adds judge_team_lead in appropriate situation" do
+    end
+
+    it "rejects judge_team_lead when user is not XYZ" do
+    end
+  end
 end
