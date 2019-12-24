@@ -3,9 +3,9 @@
 class ClaimReviewIntake < DecisionReviewIntake
   attr_reader :request_params
 
-  def ui_hash
-    Intake::ClaimReviewIntakeSerializer.new(self).serializable_hash[:data][:attributes]
-  end
+  # def ui_hash
+  #   Intake::ClaimReviewIntakeSerializer.new(self).serializable_hash[:data][:attributes]
+  # end
 
   def review!(request_params)
     detail.start_review!

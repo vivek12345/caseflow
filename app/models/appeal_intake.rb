@@ -7,9 +7,9 @@ class AppealIntake < DecisionReviewIntake
     Appeal.new(veteran_file_number: veteran_file_number)
   end
 
-  def ui_hash
-    Intake::AppealIntakeSerializer.new(self).serializable_hash[:data][:attributes]
-  end
+  # def ui_hash
+  #   Intake::AppealIntakeSerializer.new(self).serializable_hash[:data][:attributes]
+  # end
 
   def review!(request_params)
     @request_params = request_params

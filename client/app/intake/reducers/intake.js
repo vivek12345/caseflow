@@ -4,18 +4,20 @@ import { formatDateStr } from '../../util/DateUtil';
 import _ from 'lodash';
 
 const updateFromServerIntake = (state, serverIntake) => {
+  const detail = serverIntake.detail ? serverIntake.detail : {};
+
   return update(state, {
     id: {
       $set: serverIntake.id
     },
     formType: {
-      $set: serverIntake.formType
+      $set: detail.formType
     },
     asyncJobUrl: {
-      $set: serverIntake.asyncJobUrl
+      $set: detail.asyncJobUrl
     },
     detailEditUrl: {
-      $set: serverIntake.detailEditUrl
+      $set: detail.editIssuesUrl
     },
     unreadMessages: {
       $set: serverIntake.unreadMessages

@@ -7,10 +7,10 @@ class HigherLevelReviewIntake < ClaimReviewIntake
     HigherLevelReview.new(veteran_file_number: veteran_file_number)
   end
 
-  def ui_hash
-    # binding.pry
-    Intake::IntakeSerializer.new(self).serializable_hash[:data][:attributes]
-  end
+  # def ui_hash
+  #   # binding.pry
+  #   Intake::IntakeSerializer.new(self).serializable_hash[:data][:attributes]
+  # end
 
   private
 

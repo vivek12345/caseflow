@@ -18,12 +18,12 @@ const updateFromServerIntake = (state, serverIntake) => {
     return state;
   }
 
-  const contestableIssues = formatContestableIssues(serverIntake.contestableIssuesByDate);
   const detail = serverIntake.detail;
+  const contestableIssues = formatContestableIssues(detail.contestableIssuesByDate);
 
   return update(state, {
     isStarted: {
-      $set: Boolean(detail.id)
+      $set: Boolean(serverIntake.id)
     },
     informalConference: {
       $set: detail.informalConference
@@ -74,16 +74,16 @@ const updateFromServerIntake = (state, serverIntake) => {
       $set: formatRelationships(serverIntake.relationships)
     },
     intakeUser: {
-      $set: serverIntake.intakeUser
+      $set: detail.intakeUser
     },
     asyncJobUrl: {
-      $set: serverIntake.asyncJobUrl
+      $set: detail.asyncJobUrl
     },
     processedAt: {
-      $set: serverIntake.processedAt
+      $set: detail.processedAt
     },
     veteranValid: {
-      $set: serverIntake.veteranValid
+      $set: detail.veteranValid
     },
     veteranInvalidFields: {
       $set: {
