@@ -49,14 +49,14 @@ const DetailsSections = (props) => {
             readOnly={disabled} />
           <div className="cf-help-divider" />
 
-          <h2>Transcription Problem</h2>
+          <h3>Transcription Problem</h3>
           <TranscriptionProblemInputs
             transcription={transcription}
             update={updateTranscription}
             readOnly={disabled} />
           <div className="cf-help-divider" />
 
-          <h2>Transcription Request</h2>
+          <h3>Transcription Request</h3>
           <TranscriptionRequestInputs
             hearing={hearing}
             update={updateHearing}

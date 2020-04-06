@@ -127,15 +127,40 @@ const DetailsInputs = (props) => {
 
   return (
     <>
+      <div {...rowThirds}>
+        <JudgeDropdown
+          name="judgeDropdown"
+          value={hearing.judgeId}
+          readOnly={readOnly}
+          onChange={(judgeId) => update({ judgeId })}
+        />
+        <HearingCoordinatorDropdown
+          name="hearingCoordinatorDropdown"
+          value={hearing.bvaPoc}
+          readOnly={readOnly}
+          onChange={(bvaPoc) => update({ bvaPoc })}
+        />
+        <HearingRoomDropdown
+          name="hearingRoomDropdown"
+          value={hearing.room}
+          readOnly={readOnly}
+          onChange={(room) => update({ room })}
+        />
+      </div>
+      <div className="cf-help-divider" />
       {enableVirtualHearings &&
-        <div {...rowThirds}>
-          <HearingTypeDropdown
-            virtualHearing={virtualHearing}
-            requestType={requestType}
-            updateVirtualHearing={updateVirtualHearing}
-            openModal={openVirtualHearingModal}
-            readOnly={hearing.scheduledForIsPast || (isVirtual && virtualHearing && !virtualHearing.jobCompleted)}
-          />
+        <div>
+          <div {...rowThirds}>
+            <HearingTypeDropdown
+              virtualHearing={virtualHearing}
+              requestType={requestType}
+              updateVirtualHearing={updateVirtualHearing}
+              openModal={openVirtualHearingModal}
+              readOnly={hearing.scheduledForIsPast || (isVirtual && virtualHearing && !virtualHearing.jobCompleted)}
+            />
+          </div>
+          {isVirtual && <div className="cf-help-divider" />}
+          {isVirtual && <h3>Virtual Hearing Details</h3>}
           <VirtualLinkSection
             hearing={hearing}
             virtualHearing={virtualHearing}
@@ -151,27 +176,8 @@ const DetailsInputs = (props) => {
         readOnly={readOnly}
         updateVirtualHearing={updateVirtualHearing}
       />
+      <div className="cf-help-divider" />
       <div {...rowThirds}>
-        <JudgeDropdown
-          name="judgeDropdown"
-          value={hearing.judgeId}
-          readOnly={readOnly}
-          onChange={(judgeId) => update({ judgeId })}
-        />
-      </div>
-      <div {...rowThirds}>
-        <HearingRoomDropdown
-          name="hearingRoomDropdown"
-          value={hearing.room}
-          readOnly={readOnly}
-          onChange={(room) => update({ room })}
-        />
-        <HearingCoordinatorDropdown
-          name="hearingCoordinatorDropdown"
-          value={hearing.bvaPoc}
-          readOnly={readOnly}
-          onChange={(bvaPoc) => update({ bvaPoc })}
-        />
         {!isLegacy &&
           <div>
             <strong>Waive 90 Day Evidence Hold</strong>
@@ -185,6 +191,7 @@ const DetailsInputs = (props) => {
           </div>
         }
       </div>
+      <div className="cf-help-divider" />
       <TextareaField
         name="Notes"
         strongLabel
