@@ -1589,6 +1589,7 @@ describe RequestIssue, :all_dbs do
       let(:end_product_establishment) do
         create(:end_product_establishment,
                :cleared,
+               source: review,
                veteran_file_number: veteran.file_number,
                established_at: review.receipt_date - 100.days,
                code: ep_code)
@@ -1749,6 +1750,36 @@ describe RequestIssue, :all_dbs do
             expect { subject }.to raise_error(RequestIssue::ErrorCreatingDecisionIssue)
             expect(nonrating_request_issue.processed?).to eq(false)
           end
+        end
+      end
+
+      context "when multiple request issues haven't been processed" do
+        let(:associated_claims) { [{ clm_id: end_product_establishment.reference_id, bnft_clm_tc: ep_code }] }
+        let!(:rating_contention) do
+          Generators::Contention.build(
+            id: contention_reference_id,
+            claim_id: end_product_establishment.reference_id,
+            disposition: "allowed"
+          )
+        end
+        let!(:nonrating_contention) do
+          Generators::Contention.build(
+            id: nonrating_contention_reference_id,
+            claim_id: end_product_establishment.reference_id,
+            disposition: "allowed"
+          )
+        end
+
+        it "calls the decision review callback once" do
+          allow(review).to receive(:on_decision_issues_sync_processed).twice
+          request_issues = [rating_request_issue, nonrating_request_issue]
+          request_issues.each do |ri|
+            ri.submit_for_processing!
+            allow(ri).to receive(:create_decision_issues).and_return(true)
+            allow(ri).to receive(:close_decided_issue!) { sleep(1.second) }
+          end
+          request_issues.map { |ri| Thread.new { ri.sync_decision_issues! } }.each(&:join)
+          expect(review).to have_received(:on_decision_issues_sync_processed).once
         end
       end
     end
