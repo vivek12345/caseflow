@@ -3,21 +3,22 @@ import HEARING_DISPOSITION_TYPES from '../../constants/HEARING_DISPOSITION_TYPES
 import moment from 'moment-timezone';
 import _ from 'lodash';
 
-import ExponentialPolling from '../components/ExponentialPolling'
+import ExponentialPolling from '../components/ExponentialPolling';
 
-export const isPreviouslyScheduledHearing = (hearing) => (
+export const isPreviouslyScheduledHearing = (hearing) =>
   hearing.disposition === HEARING_DISPOSITION_TYPES.postponed ||
-    hearing.disposition === HEARING_DISPOSITION_TYPES.cancelled
-);
+  hearing.disposition === HEARING_DISPOSITION_TYPES.cancelled;
 
 export const now = () => {
-  return moment().tz(moment.tz.guess()).
+  return moment().
+    tz(moment.tz.guess()).
     format('h:mm a');
 };
 
 export const getWorksheetAppealsAndIssues = (worksheet) => {
   const worksheetAppeals = _.keyBy(worksheet.appeals_ready_for_hearing, 'id');
-  let worksheetIssues = _(worksheetAppeals).flatMap('worksheet_issues').
+  let worksheetIssues = _(worksheetAppeals).
+    flatMap('worksheet_issues').
     keyBy('id').
     value();
 
@@ -34,60 +35,63 @@ export const getWorksheetAppealsAndIssues = (worksheet) => {
   };
 };
 
-export const sortHearings = (hearings) => (
-  _.orderBy(Object.values(hearings || {}), (hearing) => hearing.scheduledFor, 'asc')
-);
+export const sortHearings = (hearings) =>
+  _.orderBy(Object.values(hearings || {}), (hearing) => hearing.scheduledFor, 'asc');
 
-export const filterIssuesOnAppeal = (issues, appealId) => (
-  _(issues).omitBy('_destroy').
+export const filterIssuesOnAppeal = (issues, appealId) =>
+  _(issues).
+    omitBy('_destroy').
     pickBy({ appeal_id: appealId }).
-    value()
-);
+    value();
 
 // assumes objects have identical properties
-export const deepDiff = (firstObj, secondObj) => {
-  const changedObject = _.reduce(firstObj, (result, firstVal, key) => {
-    const secondVal = secondObj[key];
+export const deepDiff = (firstObj, secondObj, calledBy) => {
+  // console.log('CALLER:', calledBy);
+  const changedObject = _.reduce(
+    firstObj,
+    (result, firstVal, key) => {
+      const secondVal = secondObj[key];
 
-    if (_.isEqual(firstVal, secondVal)) {
-      result[key] = null;
-    } else if (_.isObject(firstVal) && _.isObject(secondVal)) {
-      result[key] = deepDiff(firstVal, secondVal);
-    } else {
-      result[key] = secondVal;
-    }
+      if (_.isEqual(firstVal, secondVal)) {
+        result[key] = null;
+      } else if (_.isObject(firstVal) && _.isObject(secondVal)) {
+        result[key] = deepDiff(firstVal, secondVal, calledBy);
+      } else {
+        result[key] = secondVal;
+      }
 
-    return result;
-  }, {});
+      return result;
+    },
+    {}
+  );
 
   return _.pickBy(changedObject, (val) => val !== null);
 };
 
-export const filterCurrentIssues = (issues) => (
-  _.omitBy(issues, (issue) => (
-    // Omit if destroyed, or HAS NON-REMAND DISPOSITION FROM VACOLS
-    /* eslint-disable no-underscore-dangle */
-    issue._destroy || (issue.disposition && !issue.disposition.includes('Remand') && issue.from_vacols)
+export const filterCurrentIssues = (issues) =>
+  _.omitBy(
+    issues,
+    (issue) =>
+      // Omit if destroyed, or HAS NON-REMAND DISPOSITION FROM VACOLS
+      /* eslint-disable no-underscore-dangle */
+      issue._destroy || (issue.disposition && !issue.disposition.includes('Remand') && issue.from_vacols)
     /* eslint-enable no-underscore-dangle */
-  ))
-);
+  );
 
-export const filterPriorIssues = (issues) => (
-  _.pickBy(issues, (issue) => (
-    /* eslint-disable no-underscore-dangle */
-    !issue._destroy && issue.disposition && !issue.disposition.includes('Remand') && issue.from_vacols
+export const filterPriorIssues = (issues) =>
+  _.pickBy(
+    issues,
+    (issue) =>
+      /* eslint-disable no-underscore-dangle */
+      !issue._destroy && issue.disposition && !issue.disposition.includes('Remand') && issue.from_vacols
     /* eslint-enable no-underscore-dangle */
-  ))
-);
+  );
 
 export const VIRTUAL_HEARING_HOST = 'host';
 export const VIRTUAL_HEARING_GUEST = 'guest';
 
-export const virtualHearingRoleForUser = (user, hearing) => (
-  user.userCanAssignHearingSchedule || user.userId === hearing.judgeId ?
-    VIRTUAL_HEARING_HOST :
-    VIRTUAL_HEARING_GUEST
-)
+export const virtualHearingRoleForUser = (user, hearing) =>
+  user.userCanAssignHearingSchedule || user.userId === hearing.judgeId ? VIRTUAL_HEARING_HOST : VIRTUAL_HEARING_GUEST;
 
 export const pollVirtualHearingData = (hearingId, onSuccess) => (
   // Did not specify retryCount so if api call fails, it'll stop polling.
@@ -99,4 +103,25 @@ export const pollVirtualHearingData = (hearingId, onSuccess) => (
     render={() => null}
     url={`/hearings/${hearingId}/virtual_hearing_job_status`}
   />
-)
+);
+
+export const toggleCancelled = (first, second, form) =>
+  first[form]?.status === 'cancelled' ?
+    {
+      init: {
+        ...first,
+        [form]: reset(first[form])
+      },
+      current: {
+        [form]: {
+          ...second[form],
+          status: 'active'
+        }
+      }
+    } :
+    {
+      init: first,
+      current: second
+    };
+
+export const reset = (obj) => Object.keys(obj).reduce((result, item) => ({ ...result, [item]: '' }), {});
