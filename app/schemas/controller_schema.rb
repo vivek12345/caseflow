@@ -61,6 +61,17 @@ class ControllerSchema
     instance_eval(&block) if block
   end
 
+  # mutates params by removing any fields not declared in the schema
+  def sanitize(params)
+    params.slice!(*field_names)
+  end
+
+  def validate(params)
+    dry_schema.call(params.to_unsafe_h)
+  end
+
+  private
+
   def dry_schema
     @dry_schema ||= begin
       dsl = Dry::Schema::DSL.new(processor_type: dry_processor)
@@ -69,7 +80,9 @@ class ControllerSchema
     end
   end
 
-  private
+  def field_names
+    fields.map(&:name)
+  end
 
   def method_missing(method_name, field_name, **options)
     if SUPPORTED_TYPES.include?(method_name.to_s)
